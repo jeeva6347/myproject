@@ -9,7 +9,7 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 
 # Set environment variables
-export PYTHONPATH="/opt/render/project/src:${PYTHONPATH:-}"
+export PYTHONPATH="/opt/render/project/src/myproject:${PYTHONPATH:-}"
 export DJANGO_SETTINGS_MODULE=myproject.settings
 
 echo "Current directory: $(pwd)"
