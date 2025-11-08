@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management</title>
+    <link rel="stylesheet" href="{% static 'myapp/style.css' %}">
+</head>
+<body>
+   <h2>{% if edit %} Edit Student {% else %} Add New Student {% endif %}</h2>
+
+   <form method="POST" action="{% if edit %}?edit={{ edit.id }}{% endif %}">
+        {% csrf_token %}
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{% if edit %} {{ edit.name }} {% endif %}" required><br><br>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" value="{% if edit %} {{ edit.age }} {% endif %}" required><br><br>
+
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email" value="{% if edit %} {{ edit.email }} {% endif %}" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" value="{% if edit %} {{ edit.password }} {% endif %}" required><br><br>
+
+        <button type="submit">{% if edit %} Update {% else %} Add Student {% endif %}</button>
+        {% if edit %}
+        <a href="{% url 'home' %}">Cancel</a>
+        {% endif %}
+   </form>
+
+   <hr>
+
+   <h2>Student List</h2>
+   
+    {% for student in students %}
+    <table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>E-mail</th>
+    </tr>
+    <tr>
+           <td> {{ student.name }} </td>
+           <td>{{ student.age }}</td>
+           <td> {{student.email}}</td>
+    
+            <td><a href="?edit={{ student.id }}">Edit</a> |</td>
+            <td><a href="?delete={{ student.id }}" onclick="return confirm('Are you sure?')">Delete</a></td>
+        </tr>
+    </table>
+    {% empty %}
+        <li>No student yet.</li>
+    {% endfor %}
+   </ul>
+</body>
+</html>

@@ -1,0 +1,200 @@
+{% load bootstrap5 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Directory Management System</title>
+  {% bootstrap_css %}
+   <style>
+    
+#nav{
+    background-color: brown;
+    padding: 8px !important;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2)
+}
+#form{
+  position: relative;
+  top: 80px;
+}
+
+   </style>
+  {% bootstrap_javascript %}
+</head>
+<body class="bg-dark text-white">
+   <div  id="nav">
+        <nav class="navbar">
+            <h3 class="navbar">Directory Management System</h3>
+
+            <nav class="navbar">
+                <div class="nav-item">
+                    <a class="nav-link text-white" href="{ url 'detail.html'">Home</a>
+
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link text-white" href="about.html">About Us</a>
+
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link text-white" href="contact.html">Contact Us</a>
+
+                </div>
+    </div>
+    </nav>
+
+    </nav>
+    </div>
+  
+  <div class="container my-4">
+    <div id="form">
+        <div class="mb-4 d-flex justify-content-center">
+  <input id="searchInput" class="form-control w-50 me-3" type="search" placeholder="Search members...">
+</div>
+
+    {% if person %}
+      <h4 class="text-center text-info">Edit Members</h4>
+      <form method="POST" action="{% url 'edit' person.id %}" enctype="multipart/form-data">
+    {% else %}
+      <h4 class="text-center text-info">Add Members</h4>
+      <form method="POST" action="" enctype="multipart/form-data">
+    {% endif %}
+      {% csrf_token %}
+
+      <div class="row g-3">
+        <div class="col-md-3 col-sm-6">
+          <label class="form-label">Full Name:</label>
+          <input type="text" name="fullname" class="form-control" style="text-transform: capitalize;" value="{{ person.fullname }}" required>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <label class="form-label">Profession:</label>
+          <input type="text" name="profession" class="form-control" value="{{ person.profession }}" required>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <label class="form-label">E-mail:</label>
+          <input type="email" name="email" class="form-control" value="{{ person.email }}" required>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <label class="form-label">Mobile Number:</label>
+          <input type="number" name="mobilenumber" class="form-control" value="{{ person.mobilenumber }}" required>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <label class="form-label">City:</label>
+          <input type="text" name="city" class="form-control" value="{{ person.city }}" required>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <label class="form-label">Address:</label>
+          <textarea name="address" class="form-control" required>{{ person.address }}</textarea>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <label class="form-label">Status:</label>
+          <input type="text" name="status" class="form-control" value="{{ person.status }}" required>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <label class="form-label">Profile:</label>
+          <input type="file" name="profile" class="form-control">
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end mt-4">
+        <a href="{% url 'create' %}" class="btn btn-warning text-white me-2">Cancel</a>
+        <button type="submit" class="btn btn-primary px-4">
+          {% if person %}Save Changes{% else %}Save{% endif %}
+        </button>
+      </div>
+    </form>
+    
+  </div>
+  
+  </div>
+<div id="form">
+    <hr>
+
+  <div class="container">
+    <div class="row g-4">
+      {% for d in data %}
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 member-card">
+        <div class="card shadow-sm">
+          <div class="card-body text-center">
+
+           {% if d.profile %}
+  <img src="{{ d.profile.url }}" alt="Profile Image" class="rounded-circle img-fluid mb-3" style="width:150px; height:150px; object-fit:cover;">
+{% else %}
+  <img src="{% static 'images/default.jpg' %}" alt="Default Profile" class="rounded-circle img-fluid mb-3" style="width:150px; height:150px; object-fit:cover;">
+{% endif %}
+
+            <h5 class="fw-bold text-dark" style="text-transform: capitalize;">{{ d.fullname }}</h5>
+            <p class="text-secondary mb-2">{{ d.profession }}</p>
+            
+
+          
+            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#detailModal{{ d.id }}">
+              Show More
+            </button>
+            <a href="{% url 'edit' d.id %}" class="btn btn-sm btn-warning text-white">Edit</a>
+            <a href="{% url 'delete' d.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Delete {{ d.fullname }}?')">Delete</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="detailModal{{ d.id }}" tabindex="-1" aria-labelledby="detailModalLabel{{ d.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content text-dark">
+            <div class="modal-header bg-primary text-white text-center">
+              <h5 class="modal-title"  id="detailModalLabel{{ d.id }}" style="text-transform: capitalize;">{{ d.fullname }} — Details</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <p><strong>Profession:</strong> {{ d.profession }}</p>
+              <p><strong>Email:</strong> {{ d.email }}</p>
+              <p><strong>Mobile:</strong> {{ d.mobilenumber }}</p>
+              <p><strong>City:</strong> {{ d.city }}</p>
+              <p><strong>Address:</strong> {{ d.address }}</p>
+              <p><strong>Status:</strong> {{ d.status }}</p>
+              <p><strong>Created:</strong> {{ d.creationdate }}</p>
+              <p><strong>Updated:</strong> {{ d.updated_at }}</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-center text-muted">No records yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+  </div>
+  <br>
+  
+
+ <script>
+  const searchInput = document.getElementById('searchInput');
+  const cards = document.querySelectorAll('.member-card');
+
+  searchInput.addEventListener('input', function() {
+    const filter = searchInput.value.toLowerCase();
+
+    cards.forEach(card => {
+      const name = card.querySelector('h5').textContent.toLowerCase();
+      const profession = card.querySelector('p').textContent.toLowerCase();
+
+      if (name.includes(filter) || profession.includes(filter)) {
+        card.style.display = ''; 
+      } else {
+        card.style.display = 'none';
+       
+        
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
