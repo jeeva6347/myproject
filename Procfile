@@ -1,1 +1,2 @@
-web: gunicorn mysite.wsgi
+# Procfile
+web: gunicorn projectdms.wsgi
