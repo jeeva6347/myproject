@@ -14,11 +14,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # --- SECURITY SETTINGS ---
 SECRET_KEY = 'django-insecure-ai1a%vlq+!spa8!%6hmkc%sj3w-a0-0@mq+t#r6bp_++-^id61'
 
-# Turn off debug in production
-DEBUG = False
+# Debug should be False in production
+DEBUG = 'RENDER' not in os.environ
 
-# Allow all hosts (Render will use its own domain)
-ALLOWED_HOSTS = ['*']
+# Configure allowed hosts for Render.com
+ALLOWED_HOSTS = []
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+# During development, allow localhost
+if DEBUG:
+    ALLOWED_HOSTS.extend(['localhost', '127.0.0.1'])
 
 
 # --- INSTALLED APPS ---
@@ -26,7 +33,6 @@ INSTALLED_APPS = [
     'myapp',
     'jazzmin',
     'bootstrap5',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +47,7 @@ AUTH_USER_MODEL = 'myapp.CustomUser'
 # --- MIDDLEWARE ---
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add whitenoise for static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -76,7 +83,9 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 
 
 # --- DATABASE ---
-# Use SQLite (simple, works on Render without extra setup)
+import dj_database_url
+
+# Use SQLite locally if DATABASE_URL is not set
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -84,19 +93,12 @@ DATABASES = {
     }
 }
 
-# (Optional) If you want to use MySQL locally, comment out above and use:
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dms',
-        'USER': 'root',
-        'PASSWORD': 'jeffery@2004',
-        'HOST': 'localhost',
-        'PORT': '3306'
-    }
-}
-"""
+# Use PostgreSQL on Render.com
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.config(
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 
 
 # --- PASSWORD VALIDATION ---
@@ -125,7 +127,10 @@ USE_TZ = True
 
 # --- STATIC & MEDIA FILES ---
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # for Render
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Configure static file storage for Render
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
@@ -133,6 +138,18 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Security settings for production
+if not DEBUG:
+    # Enable HTTPS redirect
+    SECURE_SSL_REDIRECT = True
+    # Enable HSTS
+    SECURE_HSTS_SECONDS = 2592000  # 30 days
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    # Enable secure cookies
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 
 # --- DEFAULT PRIMARY KEY FIELD TYPE ---
