@@ -1,0 +1,14 @@
+asgiref==3.10.0
+Django==4.2.8
+django-bootstrap-v5==1.0.11
+django-jazzmin==3.0.1
+dj-database-url==3.0.1
+gunicorn==23.0.0
+mysqlclient==2.2.7
+Pillow==11.3.0
+# psycopg2-binary removed for local Windows development because pg_config is often missing
+# psycopg2-binary==2.9.9
+sqlparse==0.5.3
+typing_extensions==4.14.1
+tzdata==2025.2
+whitenoise==6.11.0
