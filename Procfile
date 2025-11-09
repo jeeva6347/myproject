@@ -1,2 +1,2 @@
-web: gunicorn --chdir myproject myproject.wsgi:application --log-file -
+web: gunicorn app:application --log-file -
 
