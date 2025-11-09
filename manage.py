@@ -6,6 +6,14 @@ import sys
 
 def main():
     """Run administrative tasks."""
+    # Ensure the inner project package is on sys.path so
+    # `myproject.settings` can be imported when manage.py is executed
+    # from the repository root (Render runs commands from the repo root).
+    repo_root = os.path.dirname(os.path.abspath(__file__))
+    inner_project_path = os.path.join(repo_root, 'myproject')
+    if inner_project_path not in sys.path:
+        sys.path.insert(0, inner_project_path)
+
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "myproject.settings")
 
     try:
