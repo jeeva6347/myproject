@@ -152,5 +152,40 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
 
 
+# --- FILE STORAGE (Media) ---
+# Use S3 via django-storages when AWS variables are present; otherwise use local filesystem (good for dev)
+if os.environ.get('AWS_STORAGE_BUCKET_NAME'):
+    # Ensure storages app is available
+    try:
+        # add storages to INSTALLED_APPS if not already present
+        if 'storages' not in INSTALLED_APPS:
+            INSTALLED_APPS.append('storages')
+    except Exception:
+        pass
+
+    # Use S3Boto3 storage backend for user-uploaded media files
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')  # e.g. 'us-east-1'
+    AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN')  # optional custom domain
+
+    # Optional: configure cache control
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
+
+    if AWS_S3_CUSTOM_DOMAIN:
+        MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+    else:
+        MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
+
+else:
+    # Local file storage (development) — MEDIA_URL and MEDIA_ROOT already set above
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+
 # --- DEFAULT PRIMARY KEY FIELD TYPE ---
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
