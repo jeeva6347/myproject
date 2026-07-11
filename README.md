@@ -1,48 +1,131 @@
-# myproject — Deploying to Render.com
+# 📄 Text to PDF Converter
 
-This repository is prepared for deployment on Render.com. Below are the exact build and start commands, required environment variables, and quick troubleshooting notes.
+A simple and user-friendly web application built with **Flask** that converts user-entered text into a downloadable PDF document instantly.
 
-## Recommended Render settings
+---
 
-- Build Command (recommended)
-  ```bash
-  ./build.sh
-  ```
-  This script installs requirements, runs `collectstatic` and `migrate`, and prints debug info.
+## ✨ Features
 
-- Start Command (recommended)
-  ```bash
-  gunicorn app:application --log-file -
-  ```
-  The repo includes a top-level `app.py` wrapper so Gunicorn can import the inner Django package regardless of working directory.
+- 📝 Convert text into PDF
+- ⚡ Fast PDF generation
+- 💻 Simple and responsive interface
+- 📥 Download generated PDF
+- 🐍 Built with Flask and Python
 
-> Note: If you prefer to use the Procfile, leave the Start Command blank in Render — Render will use the `Procfile` which already contains `web: gunicorn app:application --log-file -`.
+---
 
-## Required environment variables
+## 🛠️ Tech Stack
 
-- `SECRET_KEY` — set a secure production secret key (do not use the hardcoded secret in `settings.py`).
-- `DATABASE_URL` — provided automatically if you attach a Render PostgreSQL instance; otherwise set to your DB connection URL.
-- `PYTHON_VERSION` — set to `3.13.4` to match the development environment (optional but recommended).
-- `DJANGO_SETTINGS_MODULE` — `myproject.settings` (optional; the project sets this in `manage.py`/`build.sh`/`app.py`).
+- Python
+- Flask
+- HTML5
+- CSS3
+- Bootstrap
+- FPDF
 
-## Local development
+---
 
-Use `requirements.dev.txt` for local installs on Windows (it omits `psycopg2-binary`):
+## 📷 Screenshots
+<img width="1363" height="638" alt="text to pdf" src="https://github.com/user-attachments/assets/f6755cac-72c9-409b-ab3f-9063198a6e6e" />
 
-```powershell
-.\env\Scripts\Activate.ps1
-pip install -r requirements.dev.txt
-python manage.py migrate
-python manage.py collectstatic --no-input
-python manage.py runserver
+
+---
+
+## 📂 Project Structure
+
+```
+text-to-pdf-converter/
+│── app.py
+│── requirements.txt
+│── templates/
+│   └── index.html
+│── static/
+│   ├── css/
+│   └── images/
+└── README.md
 ```
 
-If you want full production dependencies locally (including `psycopg2-binary`) you'll need PostgreSQL development headers available (`pg_config`) for your platform.
+---
 
-## Troubleshooting
+## 🚀 Installation
 
-- ModuleNotFoundError: No module named `myproject.wsgi` — ensure the Start Command uses `app:application` or `--chdir myproject` so the inner package is importable.
-- psycopg2 build errors on Windows — use `requirements.dev.txt` locally or install PostgreSQL dev tools so `pg_config` is on PATH.
-- collectstatic warnings about missing `myproject/static` — create that directory if your project needs custom static files.
+### Clone the Repository
 
-If you run into any build or deploy errors on Render, paste the build log here and I will help diagnose.
+```bash
+git clone https://github.com/jeeva6347/text-to-pdf-converter.git
+cd text-to-pdf-converter
+```
+
+### Create a Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+### Activate the Virtual Environment
+
+**Windows**
+
+```powershell
+venv\Scripts\activate
+```
+
+**Linux/macOS**
+
+```bash
+source venv/bin/activate
+```
+
+### Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Run the Application
+
+```bash
+python app.py
+```
+
+Open your browser and visit:
+
+```
+http://127.0.0.1:5000
+```
+
+---
+
+## 📖 How to Use
+
+1. Enter or paste your text.
+2. Click the **Generate PDF** button.
+3. Download the generated PDF file.
+
+---
+
+## 🎯 Future Improvements
+
+- 📄 Multiple page support
+- 🎨 Font and styling options
+- 🖼️ Image support
+- 📑 PDF templates
+- ☁️ Cloud deployment
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+## 👨‍💻 Author
+
+**Jeeva L**
+
+📧 Email: **jeevalawrance2004@gmail.com**
+
+💼 LinkedIn: **https://linkedin.com/in/jeeva-l-5bb2a4387**
+
+⭐ If you found this project useful, consider giving it a **Star** on GitHub!
