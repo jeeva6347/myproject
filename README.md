@@ -1,122 +1,141 @@
-# 📄 Text to PDF Converter
+# 📁 Directory Management System
 
-A simple and user-friendly web application built with **Flask** that converts user-entered text into a downloadable PDF document instantly.
+A web-based **Directory Management System** built with **Django** and **MySQL** for managing member information in a centralized and user-friendly interface. The application allows users to add, update, search, and manage member records efficiently.
 
 ---
 
 ## ✨ Features
 
-- 📝 Convert text into PDF
-- ⚡ Fast PDF generation
-- 💻 Simple and responsive interface
-- 📥 Download generated PDF
-- 🐍 Built with Flask and Python
+- 👥 Add New Members
+- ✏️ Update Member Information
+- ❌ Delete Member Records
+- 🔍 Search Members by Name
+- 📞 Store Contact Information
+- 📧 Email Management
+- 🏙️ City & Address Management
+- 📸 Profile Image Upload
+- 📱 Responsive User Interface
+- 🗄️ MySQL Database Integration
 
 ---
 
 ## 🛠️ Tech Stack
 
+### Backend
 - Python
-- Flask
+- Django
+
+### Frontend
 - HTML5
 - CSS3
 - Bootstrap
-- FPDF
+- JavaScript
+
+### Database
+- MySQL
+
+### Tools
+- Git
+- GitHub
 
 ---
 
-## 📷 Screenshots
-<img width="1363" height="638" alt="text to pdf" src="https://github.com/user-attachments/assets/f6755cac-72c9-409b-ab3f-9063198a6e6e" />
+<img width="1362" height="628" alt="Screenshot 2026-07-11 174608" src="https://github.com/user-attachments/assets/406b0b4c-49cd-49ad-826b-6d99c9aace94" />
 
-
----
-
-## 📂 Project Structure
-
-```
-text-to-pdf-converter/
-│── app.py
-│── requirements.txt
-│── templates/
-│   └── index.html
-│── static/
-│   ├── css/
-│   └── images/
-└── README.md
-```
 
 ---
 
 ## 🚀 Installation
 
-### Clone the Repository
+### Clone Repository
 
 ```bash
-git clone https://github.com/jeeva6347/text-to-pdf-converter.git
-cd text-to-pdf-converter
+git clone https://github.com/jeeva6347/directory-management-system.git
 ```
 
-### Create a Virtual Environment
+### Navigate to Project
 
 ```bash
-python -m venv venv
+cd directory-management-system
 ```
 
-### Activate the Virtual Environment
+### Create Virtual Environment
+
+```bash
+python -m venv .venv
+```
+
+### Activate Environment
 
 **Windows**
 
 ```powershell
-venv\Scripts\activate
+.venv\Scripts\activate
 ```
 
 **Linux/macOS**
 
 ```bash
-source venv/bin/activate
+source .venv/bin/activate
 ```
 
-### Install Dependencies
+### Install Requirements
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Run the Application
+### Run Database Migrations
 
 ```bash
-python app.py
+python manage.py migrate
 ```
 
-Open your browser and visit:
+### Create Admin User
+
+```bash
+python manage.py createsuperuser
+```
+
+### Start Development Server
+
+```bash
+python manage.py runserver
+```
+
+Open:
 
 ```
-http://127.0.0.1:5000
+http://127.0.0.1:8000
 ```
 
 ---
 
-## 📖 How to Use
+## 📂 Modules
 
-1. Enter or paste your text.
-2. Click the **Generate PDF** button.
-3. Download the generated PDF file.
+- Member Management
+- Search Members
+- Profile Image Upload
+- Contact Management
+- Dashboard
+- Authentication
 
 ---
 
 ## 🎯 Future Improvements
 
-- 📄 Multiple page support
-- 🎨 Font and styling options
-- 🖼️ Image support
-- 📑 PDF templates
-- ☁️ Cloud deployment
+- Export to PDF & Excel
+- Email Notifications
+- QR Code for Members
+- REST API Integration
+- Role-Based Access Control
+- Advanced Filters
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License**.
+This project is licensed under the MIT License.
 
 ---
 
@@ -124,8 +143,8 @@ This project is licensed under the **MIT License**.
 
 **Jeeva L**
 
-📧 Email: **jeevalawrance2004@gmail.com**
+📧 Email: jeevalawrance2004@gmail.com
 
-💼 LinkedIn: **https://linkedin.com/in/jeeva-l-5bb2a4387**
+💼 LinkedIn: https://linkedin.com/in/jeeva-l-5bb2a4387
 
-⭐ If you found this project useful, consider giving it a **Star** on GitHub!
+⭐ If you found this project useful, consider giving it a Star on GitHub.
